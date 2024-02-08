@@ -1,18 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RiArrowDropDownLine } from 'react-icons/ri';
+import { Fragment } from 'react'
+import { Menu, Transition } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
 
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
+  
 function Header() {
     const [sticky, setSticky] = useState(false);
     const [open, setOpen] = useState(false);
     const [navbar, setNavbar] = useState(false);
     const [submenuOpen, setSubmenuOpen] = useState({});
+    const [user,setUser]=useState(null);
+
+    const navigate = useNavigate();
+
+    const deconnexion=()=>{
+        setTimeout(()=>{
+            localStorage.removeItem("user");
+            localStorage.removeItem("token");
+            navigate("/");   
+            setUser(null);
+        },2000);
+    }
 
     useEffect(() => {
         window.addEventListener("scroll", () => {
             const nav = document.querySelector("nav");
             window.scrollY > 0 ? setSticky(true) : setSticky(false);
         });
+        setUser(JSON.parse(localStorage.getItem("user")));
     }, []);
 
     const Navbar = [
@@ -21,8 +41,8 @@ function Header() {
             link: '/',
         },
         {
-            name: 'Profil',
-            link: '/profil',
+            name: 'Annonces',
+            link: '/Annonce',
         },
         {
             name: 'Services',
@@ -41,8 +61,8 @@ function Header() {
             ],
         },
         {
-            name: 'Contact',
-            link: '/contact',
+            name: 'Message',
+            link: '/Message',
         },
     ];
 
@@ -62,7 +82,7 @@ function Header() {
                         <div className="flex items-center justify-between py-3 md:py-5 md:block">
                             <div className="mx-7">
                                 <h4 className="text-4xl uppercase font-bolder text-white">
-                                    Rep<span className="text-pink-500 text-5xl" >'R</span>Izy
+                                    Repr<span className="text-pink-500 text-5xl" >'Izy</span>
                                 </h4>
                             </div>
                             <div className="md:hidden">
@@ -123,11 +143,65 @@ function Header() {
                                     </div>
                                 </li>
                             ))}
-                            <Link to={'/login'}
+                            {user ? 
+                                <Menu as="div" className="relative inline-block text-left">
+                                <div>
+                                  <Menu.Button className="inline-flex w-10 h-10 justify-center gap-x-1.5 rounded-full bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                    {/* Options
+                                    <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" /> */}
+                                    <img className='w-full h-auto' src={user.image} alt="Tsisy lty ah" />
+                                  </Menu.Button>
+                                </div>
+                          
+                                <Transition
+                                  as={Fragment}
+                                  enter="transition ease-out duration-100"
+                                  enterFrom="transform opacity-0 scale-95"
+                                  enterTo="transform opacity-100 scale-100"
+                                  leave="transition ease-in duration-75"
+                                  leaveFrom="transform opacity-100 scale-100"
+                                  leaveTo="transform opacity-0 scale-95"
+                                >
+                                  <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div className="py-1">
+                                      <Menu.Item>
+                                        {({ active }) => (
+                                          <Link
+                                            href="#"
+                                            className={classNames(
+                                              active ? 'bg-gray-100 text-purple-400' : 'text-purple-400',
+                                              'block px-4 py-2 text-sm font-bold'
+                                            )}
+                                          >
+                                            {user.prenom} {user.nom}
+                                          </Link>
+                                        )}
+                                      </Menu.Item>
+                                        <Menu.Item>
+                                          {({ active }) => (
+                                            <button
+                                              type="button"
+                                              onClick={deconnexion}
+                                              className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block w-full px-4 py-2 text-left text-sm'
+                                              )}
+                                            >
+                                              Se deconnecter
+                                            </button>
+                                          )}
+                                        </Menu.Item>
+                                    </div>
+                                  </Menu.Items>
+                                </Transition>
+                              </Menu>
+                            :
+                            <Link to={'/Login'}
                                 className="bg-pink-400 text-[1.1rem] font-normal text-white px-4 py-1 rounded lg:ml-10 md:ml-2 sm:ml-0 ml-0 w-28  text-center"
                                 type='submit' >
                                 Connexion
                             </Link>
+                            }
                         </ul>
                     </div>
                 </div>
