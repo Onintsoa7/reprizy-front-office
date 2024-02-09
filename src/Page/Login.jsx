@@ -64,9 +64,9 @@ function Login() {
   }
 
   return (
-    <section className="bg-gray-50 flex items-center justify-center h-screen my-10">
+    <section className="bg-gray-50 flex items-center justify-center h-screen">
       <div className="flex h-full flex-row items-center justify-center md:h-screen">
-        <div className="shadow h-3/4 w-1/2">
+        <div className="shadow h-3/4 w-2/2">
           <img className='rounded h-full w-full' src={'./logo.png'} alt="" />
         </div>
         <div className="w-full h-3/4 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0">

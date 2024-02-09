@@ -16,16 +16,12 @@ function ChatList({ conv, loading }) {
   return (
     <div className="main__chatlist">
       <div className="chatlist__heading">
-        <h2 style={{ color: 'white' }}>Messages</h2>
-        <button className="btn-nobg">
-          <i className="fa fa-ellipsis-h"></i>
-        </button>
       </div>
       <div className="chatlist__search">
         <div className="search_wrap">
-          <input type="text" placeholder="Chercher quelqu'un" required />
+          <input type="text" placeholder="Liste de vos discussions" required />
           <button className="search-btn">
-            <i className="fa fa-search"></i>
+            <i className="fa fa-heart"></i>
           </button>
         </div>
       </div>
@@ -43,7 +39,7 @@ function ChatList({ conv, loading }) {
               key={item.id}
               animationDelay={index +  1}
               last={item.messages.length >  0 ? JSON.stringify(item.messages[item.messages.length -  1]) : null}
-              image={''}
+              image={item.utilisateurs[0].image}
               onClick={() => handleClick(item)}
             />
           ))

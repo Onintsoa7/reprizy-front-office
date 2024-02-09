@@ -37,7 +37,7 @@ function Header() {
 
     const Navbar = [
         {
-            name: 'Home',
+            name: 'Accueil',
             link: '/',
         },
         {
@@ -59,7 +59,7 @@ function Header() {
 
     return (
         <>
-            <nav className={`lg:px-24 md:px-1 sm:px-14 px-8 py-2 shadow-md bg-black/80 rounded-br-full fixed w-full left-0 top-0 z-[999] ${sticky ? "bg-black/60  text-black" : "text-black"
+            <nav className={`lg:px-24 md:px-1 sm:px-14 px-8 py-2 shadow-md bg-black/80 fixed w-full left-0 top-0 z-[999] ${sticky ? "bg-black/60  text-black" : "text-black"
                 }`}>
                 <div className="justify-between mx-auto lg:w-full md:items-center md:flex">
                     <div>

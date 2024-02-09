@@ -17,7 +17,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Accueil/>}/>
-        <Route path='/message' element={<Play Component={<ChatBody/>}/>}/>
+        <Route path='/message' element={<ChatBody/>}/>
         <Route path='/Annonce' element={<Play Component={<Annonces/>}/>}/>
         <Route path='/favorites' element={<Play Component={<Favotites/>}/>}/>
         <Route path='/Detail/:id_annonce' element={<Play Component={<Details/>}/>}/>
