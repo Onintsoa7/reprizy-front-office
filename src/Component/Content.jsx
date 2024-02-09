@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import { BsHearts } from "react-icons/bs";
 import { ImNext } from "react-icons/im";
 import { Menu, Transition } from '@headlessui/react'
+import Url from '../Url';
 
 function Content() {
     const social_media = [
@@ -36,8 +37,8 @@ function Content() {
         const fetchData = async () => {
             try {
                 const [detail, filtre] = await Promise.all([
-                    get('https://repr-izy-production.up.railway.app/api/v1/Annonces'),
-                    get('https://repr-izy-production.up.railway.app/api/v1/Annonces/newAnnonce')
+                    get(Url+'Annonces'),
+                    get(Url+'Annonces/newAnnonce')
                 ]);
                 setData(detail.data.data[0]);
                 setFilters(filtre.data.data);
@@ -54,7 +55,7 @@ function Content() {
 
 
     const handleFavorite = (idannonce) => {
-        manualPost([], `https://repr-izy-production.up.railway.app/api/v1/Annonces/addFavorite/${idannonce}`)
+        manualPost([], Url+`Annonces/addFavorite/${idannonce}`)
             .then((response) => {
                 if (response.data.error !== null) {
                     setMessage(response.data.error);

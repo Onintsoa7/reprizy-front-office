@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { BounceLoader } from 'react-spinners'
 import { useEffect } from 'react'
 import { get, manualPost, post } from '../axios_utils';
+import Url from '../Url'
 
 
 function classNames(...classes) {
@@ -31,7 +32,7 @@ export default function Favotites() {
         const fetchData = async () => {
             try {
                 const [detail] = await Promise.all([
-                    get('https://repr-izy-production.up.railway.app/api/v1/Annonces/favorites'),
+                    get(Url+'Annonces/favorites'),
 
                 ]);
                 setData(detail.data.data[0]);
