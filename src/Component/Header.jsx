@@ -45,22 +45,6 @@ function Header() {
             link: '/Annonce',
         },
         {
-            name: 'Services',
-            submenu: [
-                { name: 'Service 1', link: '/services/service1' },
-                { name: 'Service 2', link: '/services/service2' },
-                // Add more submenu items as needed
-            ],
-        },
-        {
-            name: 'Portfolio',
-            submenu: [
-                { name: 'Portfolio 1 zertyuiopmlkjhg', link: '/Portfolios/Portfolio1' },
-                { name: 'Portfolio 2', link: '/Portfolios/Portfolio2' },
-                // Add more submenu items as needed
-            ],
-        },
-        {
             name: 'Message',
             link: '/Message',
         },
@@ -174,6 +158,19 @@ function Header() {
                                             )}
                                           >
                                             {user.prenom} {user.nom}
+                                          </Link>
+                                        )}
+                                      </Menu.Item>
+                                      <Menu.Item>
+                                        {({ active }) => (
+                                          <Link
+                                            to={"/favorites"}
+                                            className={classNames(
+                                              active ? 'bg-gray-100 text-purple-400' : 'text-purple-400',
+                                              'block px-4 py-2 text-sm font-bold'
+                                            )}
+                                          >
+                                            Favoris
                                           </Link>
                                         )}
                                       </Menu.Item>

@@ -6,7 +6,7 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 import { Link } from 'react-router-dom'
 import { BounceLoader } from 'react-spinners'
 import { useEffect } from 'react'
-import { get } from '../axios_utils';
+import { get, manualPost, post } from '../axios_utils';
 
 
 function classNames(...classes) {
@@ -17,6 +17,8 @@ export default function Annonces() {
     const [loading, setLoading] = useState(true);
     const [data,setData]=useState([]);
     const [filters,setFilter] = useState({});
+    const [user,setUser]=useState(null);
+
 
     useEffect(() => {
         
@@ -30,6 +32,7 @@ export default function Annonces() {
                 setData(detail.data.data[0]);
                 setFilter(filtre.data.data);
                 setLoading(false);
+                setUser(JSON.parse(localStorage.getItem("user")));
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -37,6 +40,17 @@ export default function Annonces() {
 
         fetchData();
     }, []); 
+
+    const handleFavorite = (idannonce) => {
+        manualPost([],`https://repr-izy-production.up.railway.app/api/v1/Annonces/addFavorite/${idannonce}`)
+          .then((response) => {
+            if (response.data.error !== null) {
+              alert(response.data.error);
+            } else {
+              alert("Annonce ajoutée aux favoris !");
+            }
+          });
+      };
     return (
         <div className="bg-white w-auto my-10">
             <div>
@@ -129,7 +143,7 @@ export default function Annonces() {
                                     <div className="mx-auto max-w-2xl lg:max-w-7xl lg:px-8">
                                         <div className="mt-6 grid grid-cols-1 gap-y-5 sm:grid-rows-2 lg:grid-rows-4 xl:gap-x-8">
                                             {data.map((product) => (
-                                                <div className="rounded h-5/6 flex flex-row group justify-around">
+                                                <div className="rounded h-auto flex flex-row group justify-around">
                                                     <div className="aspect-h-1 aspect-w-1 w-1/2 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                                                         <img
                                                             src={product.images[0]}
@@ -137,18 +151,23 @@ export default function Annonces() {
                                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                                         />
                                                     </div>
-                                                    <div className="mt-4 mx-5 flex w-3/4">
-                                                        <div>
+                                                    <div className="mt-4 mx-5 h-full flex w-3/4">
+                                                        <div className='w-full'>
                                                             <h2 className='text-2xl text-gray-700'>
                                                                 <Link to={"/Detail/"+product.id}>
                                                                     <span aria-hidden="true" className="text-gray-700" />
                                                                     {product.libelle}
                                                                 </Link>
                                                             </h2>
-                                                            <p className="mt-1 flex flex-row text-sm text-gray-500 ">
-                                                                {product.description}
-                                                            </p>
-                                                            <p className="text-2xl text-right font-medium text-gray-900">{product.prix}</p>
+                                                            <div className='w-full overflow-hidden h-52 p-2'>
+                                                                <p className="mt-1 flex flex-row text-sm text-gray-500 ">
+                                                                    {product.description}
+                                                                </p>
+                                                            </div>
+                                                            <div className='flex justify-between'>
+                                                                {user ? <button className='text-black border-black' onClick={() => handleFavorite(product.id)} type="button">Ajouter aux favoris</button> : null}
+                                                                <p className="text-2xl text-right font-medium text-gray-900">{'Ar'+product.prix}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

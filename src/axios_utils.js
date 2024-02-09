@@ -31,6 +31,26 @@ export async function  post(formData,setFormData,url) {
         }
 }
 
+export async function  manualPost(data,url) {
+    const token ='Bearer '+localStorage.getItem('token');
+        try {
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: url,
+                headers: {
+                    'content-type':'multipart/form-data',
+                    'authorization':token
+                },
+                data: data
+            };
+            const response = await axios.request(config);
+            return response;
+        } catch (error) {
+            console.error('Erreur lors de l\'envoi des données à railway:', error);
+        }
+}
+
 export async function get(url) {
     const token ='Bearer '+localStorage.getItem('token');
         try {

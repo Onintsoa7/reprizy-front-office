@@ -44,7 +44,7 @@ function ChatList({ conv, loading }) {
               animationDelay={index +  1}
               last={item.messages.length >  0 ? JSON.stringify(item.messages[item.messages.length -  1]) : null}
               image={''}
-              onClick={() => handleClick(item)} // Corrected line: pass a function that calls handleClick
+              onClick={() => handleClick(item)}
             />
           ))
         )}
