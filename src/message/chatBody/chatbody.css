@@ -1,0 +1,8 @@
+.main__chatbody {
+    margin-top: 105px;
+    flex-grow: 1;
+    background-color: cadetblue;
+    padding: 15px 20px;
+    display: flex;
+    height: 100vh;
+}

@@ -38,6 +38,33 @@ function Content() {
                     <button className="btn-primary mt-8 bg-pink-400">Contactez-nous</button>
                     <h4 className="md:text-2xl text-lg md:leading-normal leading-5 mt-4 font-bold text-black">
                     Avec nos fidèles partenaires:
+                    <div className="flex space-x-4">
+                            <a
+                                className="text-black hover:text-pink-500 transform hover:scale-150 
+                            transition-all duration-150 ease-in-out" href="">
+                                <SiMercedes />
+                            </a>
+                            <a
+                                className="text-black hover:text-pink-500 transform hover:scale-150
+                             transition-all duration-150 ease-in-out" href="">
+                                <SiAudi />
+                            </a>
+                            <a
+                                className="text-black hover:text-pink-500 transform hover:scale-150
+                             transition-all duration-150 ease-in-out" href="">
+                                <SiPorsche  />
+                            </a>
+                            <a
+                                className="text-black hover:text-pink-500 transform hover:scale-150
+                             transition-all duration-150 ease-in-out" href="">
+                                <SiToyota />
+                            </a>
+                            <a
+                                className="text-black hover:text-pink-500 transform hover:scale-150
+                             transition-all duration-150 ease-in-out" href="">
+                                <SiBmw />
+                            </a>
+                        </div>
                     </h4> 
                     <div className="mt-8 text-3xl flex items-center md:justify-start justify-center gap-5">
                         {social_media?.map((icon) => (
