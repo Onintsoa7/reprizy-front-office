@@ -1,18 +1,23 @@
-import { useState,useEffect } from 'react'
+import { useState,useEffect, useContext } from 'react'
 import { StarIcon } from '@heroicons/react/20/solid'
 import { RadioGroup } from '@headlessui/react'
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { BounceLoader } from 'react-spinners';
-import { get } from '../axios_utils';
+import { get, manualPost } from '../axios_utils';
+import { ActiveConversationContext } from '../message/MessageContext/ActiveConversationProvider';
+import { useNavigate } from 'react-router-dom';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
+  const {activeConversation,setActiveConversation}=useContext(ActiveConversationContext);
   const { id_annonce } = useParams();
   const [loading, setLoading] = useState(true);
   const [data,setData]=useState([]);
+  var user = JSON.parse(localStorage.getItem("user"));
+  const navigate=useNavigate();
   useEffect(() => {
     const fetchData = async () => {
         try {
@@ -28,6 +33,17 @@ export default function Example() {
     };
     fetchData();
 }, []);
+
+  const Contacter=(iduser)=>{
+    get('https://repr-izy-production.up.railway.app/api/v1/Conversations/conversation/'+iduser)
+    .then((response)=>{
+      if (response.data.data[0]) {
+        setActiveConversation(response.data.data[0]);
+        navigate("/message");
+      }
+    })
+  } 
+
 
   return (
     <div className="bg-white py-24">
@@ -100,13 +116,15 @@ export default function Example() {
                 <span className='flex justify-between'>Nbr cylindre: <p className='font-bold'>{data.nbrCylindre>0?data.nbrCylindre:"Inconnu"}</p></span>
                 <span className='flex justify-between'>Motricite: <p className='font-bold'>{data.moticite>0?data.moticite+" roues":"Inconnu"}</p></span>
               </div>
-              {}
-              <button
-                type="button"
-                className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-black px-8 py-3 text-base font-medium text-white hover:bg-black focus:outline-none "
-              >
-                Contacter vendeur
-              </button>
+              {
+                  user ? <button
+                  type="button"
+                  onClick={()=>Contacter(data.user.id)}
+                  className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-black px-8 py-3 text-base font-medium text-white hover:bg-black focus:outline-none ">
+                    Contacter vendeur
+                  </button> 
+                  : null
+              }
             </div>
           </div>
 
