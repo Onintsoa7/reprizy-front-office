@@ -1,7 +1,9 @@
-.main__chatlist {
-    border-right: 1px solid #ebe7fb;
-    padding: 0 40px 0 0px;
-  }
+.chatlist__items {
+  width: 90%;
+  margin-top: 30px;
+  overflow: auto;
+  max-height: calc(113vh - calc(100vh / 2));
+}
   .chatlist__heading {
     display: flex;
     justify-content: space-between;

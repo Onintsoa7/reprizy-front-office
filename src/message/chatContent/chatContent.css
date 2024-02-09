@@ -1,8 +1,7 @@
 .main__chatcontent {
-    flex-grow: 1;
-    padding: 20px 40px;
-    max-width: 63%;
-    border-right: 1px solid #ebe7fb;
+  flex-grow: 1;
+  padding: 20px 40px;
+  max-width: 80%;
   }
   .content__header {
     padding-bottom: 15px;
