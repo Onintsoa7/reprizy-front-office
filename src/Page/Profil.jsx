@@ -5,7 +5,7 @@ import { Image } from 'primereact/image';
 import { get } from "../axios_utils"
 import Url from '../Url';
 import { Link } from 'react-router-dom';
-// import 'primeflex/primeflex.css';
+
 import "./profil.css"
 function Profil() {
   const [dataClient, setDataClient] = useState([]);
