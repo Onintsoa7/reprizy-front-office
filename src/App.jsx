@@ -10,6 +10,7 @@ import Annonces from './Page/Annonces';
 import Details from './Page/Details';
 import Login from './Page/Login'
 import Favotites from './Page/Favorites'
+import Profil from './Page/Profil'
 // import Annonce from './annonce/Annonce'
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path='/favorites' element={<Play Component={<Favotites/>}/>}/>
         <Route path='/Detail/:id_annonce' element={<Play Component={<Details/>}/>}/>
         <Route path='/Login' element={<Login/>}/>
+        <Route path='/profil' element={<Play Component={<Profil/>}/>}/>
       </Routes>
     </>
   )
