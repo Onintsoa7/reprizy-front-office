@@ -2,7 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { SiAudi, SiPorsche, SiToyota, SiMercedes, SiBmw } from "react-icons/si";
 import { RiDoubleQuotesL, RiDoubleQuotesR } from "react-icons/ri";
-import { get } from '../axios_utils';
+import { get, manualPost, post } from '../axios_utils';
 import { BounceLoader } from 'react-spinners'
 import { Link } from 'react-router-dom'
 import { BsHearts } from "react-icons/bs";
@@ -23,8 +23,14 @@ function Content() {
     const [user, setUser] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(3); // Set the number of items per page
-    const [totalPages, setTotalPages] = useState(0);
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [message, setMessage] = useState('');
+    // La fonction pour fermer la modal
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setMessage('');
+    };
     useEffect(() => {
         setLoading(true);
         const fetchData = async () => {
@@ -46,6 +52,18 @@ function Content() {
         fetchData();
     }, []);
 
+
+    const handleFavorite = (idannonce) => {
+        manualPost([], `https://repr-izy-production.up.railway.app/api/v1/Annonces/addFavorite/${idannonce}`)
+            .then((response) => {
+                if (response.data.error !== null) {
+                    setMessage(response.data.error);
+                } else {
+                    setMessage("Annonce ajoutée aux favoris !");
+                }
+                setIsModalOpen(true);
+            });
+    };
     // Calculate the first and last item indices for the current page
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -57,6 +75,47 @@ function Content() {
                 id="home"
                 className="min-h-screen flex py-10 md:flex-row flex-col items-center"
             >
+
+                {isModalOpen && (
+                    <div className="fixed z-10 inset-0 overflow-y-auto mt-20">
+                        <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                            <div className="fixed inset-0 transition-opacity" aria-hidden="true">
+                                <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                            </div>
+
+                            {/* Contenu de la modal */}
+                            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                                <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                    <div className="sm:flex sm:items-start">
+                                        <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                                            {/* Icône de succès */}
+                                            <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                            <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                                {/* Titre de la modal en fonction du message */}
+                                                {message === "Annonce ajoutée aux favoris !" ? "Succès !" : "!"}
+                                            </h3>
+                                            <div className="mt-2">
+                                                <p className="text-sm text-gray-500">
+                                                    {/* Afficher le message */}
+                                                    {message}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                    <button onClick={closeModal} type="button" className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                        Fermer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
                 <div className="flex-1 flex items-center justify-center h-full">
                     <img src={'./logo.png'} alt="" className="md:w-11/12 h-full object-cover" />
                 </div>
