@@ -3,6 +3,7 @@ import '../index.css'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from 'axios';
+import Url from '../Url';
 
 function Login() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     setError(false);
-    const apiUrl = 'https://repr-izy-production.up.railway.app/api/v1/auth/login';
+    const apiUrl = Url+'auth/login';
 
     try {
       const data = new FormData();

@@ -4,6 +4,7 @@ import Avatar from "../chatList/Avatar";
 import ChatItem from "./ChatItem";
 import { ActiveConversationContext } from "../MessageContext/ActiveConversationProvider";
 import { manualPost } from "../../axios_utils";
+import Url from "../../Url";
 function ChatContent({mess}) {
   const {activeConversation}=useContext(ActiveConversationContext);
   const [messages, setMessages] = useState([]);
@@ -45,7 +46,7 @@ function ChatContent({mess}) {
   
     setSending(true);
   
-    manualPost(data, 'https://repr-izy-production.up.railway.app/api/v1/Conversations/newMessage')
+    manualPost(data, Url+'Conversations/newMessage')
       .then((response) => {
         setMessages(prevMessages => [...prevMessages, response.data.data[0]]);
         setEnvoi("");
