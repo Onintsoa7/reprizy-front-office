@@ -37,7 +37,7 @@ function Content() {
         const fetchData = async () => {
             try {
                 const [detail, filtre] = await Promise.all([
-                    get(Url+'Annonces'),
+                    get(Url+'Annonces/validated'),
                     get(Url+'Annonces/newAnnonce')
                 ]);
                 setData(detail.data.data[0]);

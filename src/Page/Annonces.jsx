@@ -6,7 +6,7 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 import { Link } from 'react-router-dom'
 import { BounceLoader } from 'react-spinners'
 import { useEffect } from 'react'
-import { get, manualPost, post } from '../axios_utils';
+import { get, manualPost, post,handleChange } from '../axios_utils';
 import { BsHearts } from "react-icons/bs";
 import Url from '../Url'
 
@@ -23,13 +23,14 @@ export default function Annonces() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(3); // Set the number of items per page
     const [totalPages, setTotalPages] = useState(0);
+    const [formData,setFormData]=useState(new FormData());
 
     useEffect(() => {
         setLoading(true);
         const fetchData = async () => {
             try {
                 const [detail, filtre] = await Promise.all([
-                    get(Url+'Annonces'),
+                    get(Url+'Annonces/validated'),
                     get(Url+'Annonces/newAnnonce')
                 ]);
                 setData(detail.data.data[0]);
@@ -70,6 +71,20 @@ export default function Annonces() {
         setIsModalOpen(false);
         setMessage('');
     };
+
+    const handleInput=(e)=>{
+        handleChange(e,formData,setFormData);
+        console.log(formData.values);
+    }
+
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        const [detail] = await Promise.all([
+            post(formData,setFormData,Url+'Annonces/search')
+        ]);
+        setData((prevData) => detail.data.data[0]);
+        const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+    }
     return (
         <div className="bg-white w-auto my-10">
             <div>
@@ -141,20 +156,29 @@ export default function Annonces() {
                             </h2>
 
                             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-                                <form className="hidden lg:block">
+                            <form onSubmit={handleSubmit} className="hidden lg:block">
                                     <h3 className="sr-only">Categories</h3>
                                     <div className="groups grid grid-cols-1 grid-rows-2 gap-y-5">
                                         <div className="input-group">
-                                            <input className=' rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="libele" id="" placeholder='Libele' />
+                                            <input onChange={handleInput} className=' rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="libelle" id="" placeholder='Libele' />
                                         </div>
                                         <div className="input-group">
-                                            <input className='rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="description" id="" placeholder='Description' />
+                                            <input onChange={handleInput} className='rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="description" id="" placeholder='Description' />
                                         </div>
                                         <div className="input-group">
-                                            <input className='rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="annee" id="" placeholder='Annee' />
+                                            <input onChange={handleInput} className='rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="annee" id="" placeholder='Annee' />
                                         </div>
                                         <div className="input-group">
-                                            <select className='text-gray-400 rounded  w-full outline-none focus:border-gray-300 focus:outline-none' name="cat" id="">
+                                            <input onChange={handleInput} className='rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="prixMin" id="" placeholder='Prix min' />
+                                        </div>
+                                        <div className="input-group">
+                                            <input onChange={handleInput} className='rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="prixMax" id="" placeholder='Prix max' />
+                                        </div>
+                                         <div className="input-group">
+                                            <input onChange={handleInput} className='rounded border-b w-full text-black border-gray-400 focus:ring-0 outline-none' type="text" name="kilometrique" id="" placeholder='kilometrique' />
+                                        </div>
+                                        <div className="input-group">
+                                            <select onChange={handleInput} className='text-gray-400 rounded  w-full outline-none focus:border-gray-300 focus:outline-none' name="idcategorie" id="">
                                                 <option value="">Categorie</option>
                                                 {filters[0].map((cat) => (
                                                     <option value={cat.id}>{cat.nom}</option>
@@ -162,7 +186,7 @@ export default function Annonces() {
                                             </select>
                                         </div>
                                         <div className="input-group">
-                                            <select className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name=" " id="">
+                                            <select onChange={handleInput} className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name="idtype" id="">
                                                 <option value="">Type</option>
                                                 {filters[6].map((cat) => (
                                                     <option value={cat.id}>{cat.nom}</option>
@@ -170,7 +194,7 @@ export default function Annonces() {
                                             </select>
                                         </div>
                                         <div className="input-group">
-                                            <select className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name=" " id="">
+                                            <select onChange={handleInput} className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name="idmodele" id="">
                                                 <option value="">Modele</option>
                                                 {filters[4].map((cat) => (
                                                     <option value={cat.id}>{cat.nom}</option>
@@ -178,7 +202,7 @@ export default function Annonces() {
                                             </select>
                                         </div>
                                         <div className="input-group">
-                                            <select className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name=" " id="">
+                                            <select onChange={handleInput} className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name="idtransmission" id="">
                                                 <option value="">Transmission</option>
                                                 {filters[5].map((cat) => (
                                                     <option value={cat.id}>{cat.nom}</option>
@@ -186,7 +210,7 @@ export default function Annonces() {
                                             </select>
                                         </div>
                                         <div className="input-group">
-                                            <select className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name=" " id="">
+                                            <select onChange={handleInput} className='text-gray-400 rounded w-full outline-none focus:border-gray-300 focus:outline-none' name="idenergie" id="">
                                                 <option value="">Energie</option>
                                                 {filters[3].map((cat) => (
                                                     <option value={cat.id}>{cat.nom}</option>
